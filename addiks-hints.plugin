@@ -1,0 +1,9 @@
+[Plugin]
+Loader=python3
+Module=addiks-hints
+IAge=3
+Name=Addiks - Hints
+Description=Validates the open file against several checkers and shows hints i nthe file.
+Authors=Gerrit Addiks <gerrit@addiks.de>
+Copyright=Copyright (C) 2015 Gerrit Addiks
+Website=https://github.com/addiks/gedit-hints-plugin

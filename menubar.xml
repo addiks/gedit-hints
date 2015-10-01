@@ -1,0 +1,8 @@
+<ui>
+    <menubar name="MenuBar">
+        <menu name="EditMenu" action="File">
+            <separator/>
+            <menuitem name="RepairFile" action="RepairFileAction"/>
+        </menu>
+    </menubar>
+</ui>

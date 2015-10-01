@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="de.addiks.gedit.hints" path="/de/addiks/gedit/hints/">
+      <key type="b" name="phplint">
+          <default>false</default>
+          <summary>Execute PHP lint in gedit</summary>
+          <description>Execute PHP lint</description>
+      </key>
+      <key type="b" name="phpmd">
+          <default>false</default>
+          <summary>Execute php mess detector in gedit</summary>
+          <description>Execute php mess detector in gedit</description>
+      </key>
+      <key type="b" name="phpcs">
+          <default>false</default>
+          <summary>Execute php codesniffer in gedit</summary>
+          <description>Execute php codesniffer in gedit</description>
+      </key>
+  </schema>
+</schemalist>
