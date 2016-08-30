@@ -32,7 +32,9 @@ class HintManager:
     def get_hints_by_file(self, filepath, content=None):
         hints = []
 
-        suffix = filepath.split(".")[-1]
+        suffix = "tmp"
+        if "." in filepath:
+            suffix = filepath.split(".")[-1]
 
         tempFile = tempfile.NamedTemporaryFile(suffix="."+suffix, delete=False)
 
@@ -64,7 +66,7 @@ class PHPLintAdapter:
 
     def get_hints_by_file(self, filepath, filepathReal):
         hints = []
-        
+
         if filepathReal[-4:]!='.php':
             return hints
 
@@ -73,7 +75,7 @@ class PHPLintAdapter:
         color = "#FF0000"
 
         try:
-            sp = subprocess.Popen(["/usr/bin/env", "php", plugin_path+"/PHP-Parser/bin/php-parse.php", "-c", "--no-dump", filepath], 
+            sp = subprocess.Popen(["/usr/bin/env", "php", plugin_path+"/PHP-Parser/bin/php-parse.php", "-c", "--no-dump", filepath],
                 stdin=PIPE, stdout=PIPE, stderr=PIPE
             )
             sp.wait()
@@ -92,7 +94,7 @@ class PHPLintAdapter:
                     hints.append([lineBegin, lineEnd, columnBegin, columnEnd, message, color, 300])
         except OSError as error:
             print(error)
-        
+
         return hints
 
 class PHPMDAdapter:
@@ -112,7 +114,7 @@ class PHPMDAdapter:
         for directory, rulesetFilepath in self._plugin.get_all_phpmd_rulesets():
             if filepathReal[0:len(directory)] == directory and os.path.exists(rulesetFilepath):
                 try:
-                    sp = subprocess.Popen(['phpmd', filepath, 'xml', rulesetFilepath], 
+                    sp = subprocess.Popen(['phpmd', filepath, 'xml', rulesetFilepath],
                         stdin=PIPE, stdout=PIPE, stderr=PIPE
                     )
                     sp.wait()

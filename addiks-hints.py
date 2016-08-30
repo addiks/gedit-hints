@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import gi
+gi.require_version('Notify', '0.7')
+
 from gi.repository import GLib, Gtk, Gdk, GObject, Gedit, PeasGtk, Gio, GtkSource, GdkPixbuf, Notify, Pango
 from addiks_hints.helpers import *
 from inspect import getmodule
@@ -471,18 +474,20 @@ class AddiksHintsWindow(GObject.Object, Gedit.WindowActivatable):
         AddiksHintsApp.get().register_window(self)
 
         plugin_path = os.path.dirname(__file__)
-        self._ui_manager = self.window.get_ui_manager()
-        actions = [
-            ['RepairFileAction',  "Try to repair the file",  "<Ctrl><Alt>R",   self.on_repair_file],
-        ]
 
-        self._actions = Gtk.ActionGroup("AddiksHintsMenuActions")
-        for actionName, title, shortcut, callback in actions:
-            self._actions.add_actions([(actionName, Gtk.STOCK_INFO, title, shortcut, "", callback),])
+        if "get_ui_manager" in dir(self.window):# build menu for gedit 3.10 (global menu per window)
+            self._ui_manager = self.window.get_ui_manager()
+            actions = [
+                ['RepairFileAction',  "Try to repair the file",  "<Ctrl><Alt>R",   self.on_repair_file],
+            ]
 
-        self._ui_manager.insert_action_group(self._actions)
-        self._ui_merge_id = self._ui_manager.add_ui_from_string(file_get_contents(plugin_path + "/menubar.xml"))
-        self._ui_manager.ensure_update()
+            self._actions = Gtk.ActionGroup("AddiksHintsMenuActions")
+            for actionName, title, shortcut, callback in actions:
+                self._actions.add_actions([(actionName, Gtk.STOCK_INFO, title, shortcut, "", callback),])
+
+            self._ui_manager.insert_action_group(self._actions)
+            self._ui_merge_id = self._ui_manager.add_ui_from_string(file_get_contents(plugin_path + "/menubar.xml"))
+            self._ui_manager.ensure_update()
 
     def do_deactivate(self):
         AddiksHintsApp.get().unregister_window(self)
