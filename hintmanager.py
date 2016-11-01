@@ -3,7 +3,6 @@ import re
 import os
 import subprocess
 import tempfile
-from addiks_hints.helpers import *
 from subprocess import Popen, PIPE
 import xml.etree.ElementTree as ET
 
@@ -39,7 +38,10 @@ class HintManager:
         tempFile = tempfile.NamedTemporaryFile(suffix="."+suffix, delete=False)
 
         if content == None:
-            tempFile.file.write(file_get_contents(filepath))
+            with open(filepath) as fileHandle:
+                fileData = fileHandle.read()
+                tempFile.file.write(fileData)
+
         else:
             tempFile.file.write(bytes(content, 'UTF-8'))
 
